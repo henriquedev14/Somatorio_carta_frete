@@ -1,64 +1,105 @@
-from math import *
-
-# Funções
+# Somatorio_carta_frete
+Somatório de carta frete sem quebra e com quebra parcial e integral 
+from math import*
+# Início das funções
 def negativa():
     print('-'*50)
     print('A CARTA FRETE NÃO PODE SER TROCADA NESTE POSTO!')
     print('-'*50)
-
+def cadastro():
+    print('-' * 50)
+    print('A CARTA FRETE POSSUI CADASTRO E ESTÁ ATIVO? ')
+    print('SOMATÓRIO DE CARTA FRETE:')
+    liberado = int(input('1 - SIM  2 - NÃO:  '))
+    if (liberado != 1 and liberado != 2):
+        print('-' * 50)
+        print('OPÇÃO INVÁLIDA!\nINSIRA UMA OPÇÃO VÁLIDA! ')
+        print('-' * 50)
+        cadastro()
+    if (liberado == 2):
+        negativa()
+    if (liberado == 1):
+        documentacao()
 def documentacao():
     print('A DOCUMENTAÇÃO JÁ FOI TODA CONFERIDA, TEM O TICKET BALANÇA, CARTA VIA SALDO E DACTE?')
-    doc = input('1 - SIM   2 - NÃO: ')
-
-    if doc == '2':
-        negativa()
-    elif doc != '1':
+    doc = int(input('1 - SIM   2 - NÃO: '))
+    if (doc != 1 and doc != 2):
         print('-' * 50)
-        print('OPÇÃO INVÁLIDA! INSIRA UMA OPÇÃO VÁLIDA!')
+        print('OPÇÃO INVÁLIDA!\nINSIRA UMA OPÇÃO VÁLIDA! ')
         print('-' * 50)
         documentacao()
-    else:
+    if (doc == 2):
+        negativa()
+    if (doc == 1):
         entrada()
+def funcao_parcial():
+    print('-' * 50)
+    print('OPÇÃO INVÁLIDA!\nINSIRA UMA OPÇÃO VÁLIDA! ')
+    print('-' * 50)
+    parcial = int(input('DIGITE:\n1 - DESCONTO PARCIAL ou 2 - DESCONTO INTEGRAL:\n'))
 
+def quebra():
+    tipodequebra = int(input('A QUEBRA É DESCONTADA DE FORMA PARCIAL OU INTEGRAL?\n1 - PARCIAL 2 - INTEGRAL: '))
+    if (tipodequebra!=1 and tipodequebra !=2):
+        print('-'*50)
+        print('OPÇÃO INVÁLIDA!\nINSIRA UMA OPÇÃO VÁLIDA! ')
+        print('-' * 50)
+        quebra()
 def entrada():
-    pesoSaida = input('INFORME O PESO DE SAÍDA: ')
-    pesoDescarregado = input('INFORME O PESO QUE ESTÁ NO TICKET BALANÇA: ')
-    tolerancia = input('INFORME A TOLERANCIA EM %: ')
-    ppt = input('INFORME O VALOR DO FRETE COMBINADO (PPT): ')
-    descontos = input('INFORME O VALOR TOTAL DOS DESCONTOS: ')
-
-    # Verificação de valores inválidos
-    try:
-        pesoSaida = float(pesoSaida)
-        pesoDescarregado = float(pesoDescarregado)
-        tolerancia = float(tolerancia)
-        ppt = float(ppt)
-        descontos = float(descontos)
-    except ValueError:
-        print('-' * 50)
-        print('VALORES INSERIDOS INVÁLIDOS! INSIRA NOVAMENTE.')
-        print('-' * 50)
-        entrada()
-        return
-
-    # Cálculo da tolerância de perda da carga
+    pesoSaida = float(input('INFORME O PESO DE SAÍDA: '))
+    pesoDescarregado = float(input('INFORME O PESO QUE ESTÁ NO TICKET BALANÇA: '))
+    tolerancia = float(input('INFORME A TOLERANCIA EM %: '))/100
+    ppt = float(input('INFORME O VALOR DO FRETE COMBINADO (PPT): '))
+    descontos = float(input('INFORME O VALOR TOTAL DOS DESCONTOS: '))
+    #Cálculo da tolerância de perca da carga
     pode_perder = tolerancia * pesoSaida
     diferenca_de_peso = pesoSaida - pesoDescarregado
-
     if diferenca_de_peso <= pode_perder:
         if pesoDescarregado <= pesoSaida:
             valor = pesoDescarregado * ppt
             print('O VALOR DO FRETE É: {:.2f}'.format(valor/1000))
             print('O VALOR A SE PAGAR PELA CARTA FRETE É : R$ {:.2f}'.format((valor/1000)-descontos))
-    else:
-        parcial = input('DIGITE:\n1 - DESCONTO PARCIAL ou 2 - DESCONTO INTEGRAL:\n')
+    elif diferenca_de_peso>pode_perder:
+        parcial = int(input('DIGITE:\n1 - DESCONTO PARCIAL ou 2 - DESCONTO INTEGRAL:\n'))
+        if parcial != 1 and parcial != 2:
+            funcao_parcial()
+        elif parcial == 1:
+            valor_nota = float(input('INFORME O VALOR DA MERCADORIA QUE CONSTA NA NOTA FISCAL: '))
+            valor_kg = valor_nota/pesoSaida #valor do kg
+            difenca_peso_parcial = (diferenca_de_peso - pode_perder)*valor_kg
+            valor = pesoDescarregado * ppt
+            print('O VALOR A SE PAGAR PELA CARTA FRETE É : R$ {:.2f}'.format((valor/1000)-descontos-difenca_peso_parcial))
+        elif parcial == 2:
+            valor_nota = float(input('INFORME O VALOR DA MERCADORIA QUE CONSTA NA NOTA FISCAL: '))
+            valor_kg = valor_nota / pesoSaida  # valor do kg
+            difenca_peso_integral = diferenca_de_peso * valor_kg
+            valor = pesoDescarregado * ppt
+            print('O VALOR A SE PAGAR PELA CARTA FRETE É : R$ {:.2f}'.format((valor / 1000) - descontos - difenca_peso_integral))
 
-        # Verificação de valores inválidos
-        if parcial != '1' and parcial != '2':
-            print('-' * 50)
-            print('OPÇÃO INVÁLIDA! INSIRA UMA OPÇÃO VÁLIDA!')
-            print('-' * 50)
-            entrada()
-            return
+# Final das funções
 
-        valor
+# início do corpo principal
+print('='*50)
+print('SOMATÓRIO DE CARTA FRETE:')
+print('='*50)
+print('A CARTA FRETE POSSUI CADASTRO E ESTÁ ATIVO? ')
+liberado = int(input('1 - SIM  2 - NÃO:  '))
+if liberado != 1 and liberado !=2:
+    print('-'*50)
+    print('OPÇÃO INVÁLIDA!\nINSIRA UMA OPÇÃO VÁLIDA! ')
+    print('-'*50)
+    cadastro()
+if liberado == 2:
+    negativa()
+if liberado == 1:
+    print('A DOCUMENTAÇÃO JÁ FOI TODA CONFERIDA, TEM O TICKET BALANÇA, CARTA VIA SALDO E DACTE?')
+    doc = int(input('1 - SIM   2 - NÃO: '))
+    if (doc != 1 and doc != 2):
+        print('-' * 50)
+        print('OPÇÃO INVÁLIDA!\nINSIRA UMA OPÇÃO VÁLIDA! ')
+        print('-' * 50)
+        documentacao()
+    if (doc == 2):
+        negativa()
+    if (doc == 1):
+        entrada()
